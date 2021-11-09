@@ -6,6 +6,12 @@ cmake ../Transforms
 make
 cd ../Test
 
+if [ ! -d "Bin" ]; then
+    mkdir Bin
+fi
+if [ ! -d "IR" ]; then
+    mkdir IR
+fi
 # 未混淆的ELF文件
 clang -S -emit-llvm TestProgram.cpp -o IR/orig.ll
 clang IR/orig.ll -o Bin/orig
