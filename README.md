@@ -6,6 +6,16 @@ Obfuscator refactored and extended from OLLVM.
 - Clang 12.0.1
 - CMake 3.21.1
 ## Usage
+### Compile Obfuscation Passes
+```
+if [ ! -d "Build" ]; then
+    mkdir Build
+fi
+cd ./Build
+cmake ../Transforms
+make
+cd ../Test
+```
 ### Control Flow Flattening
 ```
 opt -lowerswitch -S IR/TestProgram_orig.ll -o IR/TestProgram_lowerswitch.ll
