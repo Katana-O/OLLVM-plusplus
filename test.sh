@@ -1,7 +1,12 @@
-cd ./Build
+echo -e "\n\033[32m[*] Compiling passess... \033[0m"
+mkdir -p Build
+cd Build
 cmake ../Transforms
 make
 cd ../Test
+mkdir -p Bin
+mkdir -p IR
+echo -e "\n\033[32m[*] Compilation completed \033[0m"
 
 runTest(){
     echo -e "\n\033[32m[*] Test $1 \033[0m"
