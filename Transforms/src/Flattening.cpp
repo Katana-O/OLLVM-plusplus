@@ -1,7 +1,7 @@
 #include "llvm/IR/Function.h"
 #include "llvm/Pass.h"
-#include "llvm/IR/LegacyPassManager.h"
-#include "llvm/Transforms/IPO/PassManagerBuilder.h"
+#include "llvm/InitializePasses.h"
+#include "llvm/Transforms/Scalar.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/Transforms/Utils.h"
@@ -28,7 +28,13 @@ namespace{
     
             bool runOnFunction(Function &F);
 
+            void getAnalysisUsage(AnalysisUsage &Info) const override;
     };
+}
+
+void Flattening::getAnalysisUsage(AnalysisUsage &Info) const{
+    Info.addRequiredID(LowerSwitchID);
+    FunctionPass::getAnalysisUsage(Info);
 }
 
 bool Flattening::runOnFunction(Function &F){
@@ -44,10 +50,9 @@ void Flattening::flatten(Function &F){
     if(F.size() <= 1){
         return;
     }
-    // Lower switch
-    // 调用 Lower switch 会导致崩溃，解决方法未知
-    //FunctionPass *pass = createLowerSwitchPass();
-    //pass->runOnFunction(F);
+    // 覆盖 getAnalysisUsage 函数后，无需再手动调用 LowerSwitchPass
+    // FunctionPass *pass = createLowerSwitchPass();
+    // pass->runOnFunction(F);
     // 将除入口块（第一个基本块）以外的基本块保存到一个 vector 容器中，便于后续处理
     // 首先保存所有基本块
     vector<BasicBlock*> origBB;
@@ -119,6 +124,6 @@ void Flattening::flatten(Function &F){
     }
     fixStack(F);
 }
- 
+
 char Flattening::ID = 0;
 static RegisterPass<Flattening> X("fla", "Flatten the basic blocks in each function.");

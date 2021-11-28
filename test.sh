@@ -23,8 +23,8 @@ opt -load ../Build/LLVMObfuscator.so -split -split_num 3 -S IR/orig.ll -o IR/spl
 clang IR/split.ll -o Bin/split
 
 # 控制流平坦化
-opt -lowerswitch -S IR/orig.ll -o IR/lowerswitch.ll
-opt -load ../Build/LLVMObfuscator.so -fla -split_num 3 -S IR/lowerswitch.ll -o IR/fla.ll
+# opt -lowerswitch -S IR/orig.ll -o IR/lowerswitch.ll
+opt -load ../Build/LLVMObfuscator.so -fla -split_num 3 -S IR/orig.ll -o IR/fla.ll
 clang IR/fla.ll -o Bin/fla
 echo -e "\n\033[32m> Test case on Flattening <\033[0m"
 ./Bin/fla flag{s1mpl3_11vm_d3m0}
