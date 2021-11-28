@@ -21,8 +21,7 @@ clang -S -emit-llvm TestProgram.cpp -o IR/orig.ll
 ```
 ### Control Flow Flattening
 ```
-opt -lowerswitch -S IR/orig.ll -o IR/lowerswitch.ll
-opt -load ../Build/LLVMObfuscator.so -fla -split_num 3 -S IR/lowerswitch.ll -o IR/fla.ll
+opt -load ../Build/LLVMObfuscator.so -fla -split_num 3 -S IR/orig.ll -o IR/fla.ll
 clang IR/fla.ll -o Bin/fla
 ```
 ### Bogus Control Flow
