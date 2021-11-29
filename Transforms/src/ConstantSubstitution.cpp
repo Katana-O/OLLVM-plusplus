@@ -51,7 +51,7 @@ bool ConstantSubstitution::runOnFunction(Function &F){
                 origInst.push_back(&I);
             }
             for(Instruction *I : origInst){
-                if(isa<BinaryOperator>(I)){
+                if(isa<StoreInst>(I) || isa<CmpInst>(I) || isa<BinaryOperator>(I)){
                     substitute(I);
                 }
             }
