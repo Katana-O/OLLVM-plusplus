@@ -12,10 +12,10 @@
 using namespace llvm;
 using std::vector;
 
-#define NUMBER_CONST_SUBST 1
+#define NUMBER_CONST_SUBST 2
 
 // 混淆次数，混淆次数越多混淆结果越复杂
-static cl::opt<int> ObfuTime("consub_loop", cl::init(1), cl::desc("Obfuscate a function ${consub_loop} time(s)."));
+static cl::opt<int> loops("csb_loops", cl::init(1), cl::desc("Obfuscate each function ${csb_loops} time(s)."));
 
 namespace{
 
@@ -44,7 +44,7 @@ namespace{
 
 bool ConstantSubstitution::runOnFunction(Function &F){
     INIT_CONTEXT(F);
-    for(int i = 0;i < ObfuTime;i ++){
+    for(int i = 0;i < loops;i ++){
         for(BasicBlock &BB : F){
             vector<Instruction*> origInst;
             for(Instruction &I : BB){
@@ -62,21 +62,22 @@ bool ConstantSubstitution::runOnFunction(Function &F){
 void ConstantSubstitution::linearSubstitute(Instruction *I, int i){
     Module &M = *I->getModule();
     ConstantInt *val = cast<ConstantInt>(I->getOperand(i));
+    IntegerType *type = val->getType();
     // 随机生成 x, y, a, b
-    int randX = rand(), randY = rand();
-    int randA = rand(), randB = rand();
+    uint64_t randX = rand(), randY = rand();
+    uint64_t randA = rand(), randB = rand();
     // 计算 c = val - (ax + by)
     APInt c = val->getValue() - (randA * randX + randB * randY);
-    ConstantInt *constX = CONST(val->getType(), randX);
-    ConstantInt *constY = CONST(val->getType(), randY);
-    ConstantInt *constA = CONST(val->getType(), randA);
-    ConstantInt *constB = CONST(val->getType(), randB);
-    ConstantInt *constC = (ConstantInt*)CONST(val->getType(), c);
+    ConstantInt *constX = CONST(type, randX);
+    ConstantInt *constY = CONST(type, randY);
+    ConstantInt *constA = CONST(type, randA);
+    ConstantInt *constB = CONST(type, randB);
+    ConstantInt *constC = (ConstantInt*)CONST(type, c);
     // 创建全局变量 x, y
-    GlobalVariable *x = new GlobalVariable(M, val->getType(), false, GlobalValue::PrivateLinkage, constX, "x");
-    GlobalVariable *y = new GlobalVariable(M, val->getType(), false, GlobalValue::PrivateLinkage, constY, "y");
-    LoadInst *opX = new LoadInst(val->getType(), x, "", I);
-    LoadInst *opY = new LoadInst(val->getType(), y, "", I);
+    GlobalVariable *x = new GlobalVariable(M, type, false, GlobalValue::PrivateLinkage, constX, "x");
+    GlobalVariable *y = new GlobalVariable(M, type, false, GlobalValue::PrivateLinkage, constY, "y");
+    LoadInst *opX = new LoadInst(type, x, "", I);
+    LoadInst *opY = new LoadInst(type, y, "", I);
     // 构造 op = ax + by + c 表达式
     BinaryOperator *op1 = BinaryOperator::CreateMul(opX, constA, "", I);
     BinaryOperator *op2 = BinaryOperator::CreateMul(opY, constB, "", I);
@@ -94,7 +95,7 @@ void ConstantSubstitution::bitwiseSubstitute(Instruction *I, int i){
     uint32_t left = rand() % (width - 1) + 1;
     uint32_t right = width - left;
     // 随机生成 x, y
-    uint32_t randX = rand(), randY = rand();
+    uint64_t randX = rand(), randY = rand();
     // 计算 c = val ^ (x << left | y >> right)
     APInt c = val->getValue() ^ (randX << left | randY >> right);
     ConstantInt *constX = CONST(type, randX);
@@ -118,7 +119,7 @@ void ConstantSubstitution::substitute(Instruction *I){
     int operandNum = I->getNumOperands();
     for(int i = 0;i < operandNum;i ++){
         if(isa<ConstantInt>(I->getOperand(i))){
-            int choice = rand() % NUMBER_CONST_SUBST;
+            int choice = rand() % 1;
             switch (choice) {
                 case 0:
                     linearSubstitute(I, i);

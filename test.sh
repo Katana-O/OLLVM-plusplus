@@ -22,7 +22,7 @@ runTest(){
 }
 
 # 编译未混淆的 LLVM IR 文件
-clang -S -emit-llvm TestProgram-3.cpp -o IR/orig.ll
+clang -S -emit-llvm TestProgram-1.cpp -o IR/orig.ll
 
 # 控制流平坦化
 runTest "Flattening" "fla"
