@@ -126,8 +126,7 @@ void ConstantSubstitution::substitute(Instruction *I){
             int choice = rand() % NUMBER_CONST_SUBST;
             switch (choice) {
                 case 0:
-                    //linearSubstitute(I, i);
-                    bitwiseSubstitute(I, i);
+                    linearSubstitute(I, i);
                     break;
                 case 1:
                     bitwiseSubstitute(I, i);
