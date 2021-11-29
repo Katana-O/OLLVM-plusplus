@@ -11,6 +11,7 @@ void encrypt(unsigned char *dest, char *src){
         dest[i] = (src[i] + (32 - i)) ^ i; 
     } 
 }
+
 //flag{s1mpl3_11vm_d3m0} 
 int main(int argc, char *argv[]){ 
     printf("Welcome to LLVM world...\n");

@@ -1,4 +1,4 @@
-echo -e "\n\033[32m[*] Compiling passess... \033[0m"
+echo -e "\n\033[32m[*] Compiling passes... \033[0m"
 mkdir -p Build
 cd Build
 cmake ../Transforms
@@ -22,7 +22,7 @@ runTest(){
 }
 
 # 编译未混淆的 LLVM IR 文件
-clang -S -emit-llvm TestProgram.cpp -o IR/orig.ll
+clang -S -emit-llvm TestProgram-3.cpp -o IR/orig.ll
 
 # 控制流平坦化
 runTest "Flattening" "fla"
@@ -37,4 +37,4 @@ runTest "Substitution" "sub"
 runTest "RandomControlFlow" "rcf"
 
 # 常量替换
-runTest "ConstantSubstitution" "csub"
+runTest "ConstantSubstitution" "csb"
