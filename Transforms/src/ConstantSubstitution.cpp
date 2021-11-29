@@ -51,7 +51,7 @@ bool ConstantSubstitution::runOnFunction(Function &F){
                 origInst.push_back(&I);
             }
             for(Instruction *I : origInst){
-                if(isa<StoreInst>(I) || isa<BinaryOperator>(I) || isa<CmpInst>(I)){
+                if(isa<BinaryOperator>(I)){
                     substitute(I);
                 }
             }
@@ -92,6 +92,10 @@ void ConstantSubstitution::bitwiseSubstitute(Instruction *I, int i){
     ConstantInt *val = cast<ConstantInt>(I->getOperand(i));
     IntegerType *type = val->getType();
     uint32_t width = type->getIntegerBitWidth();
+    // 不对位数小于8的整数进行替代
+    if(width < 8){
+        return;
+    }
     uint32_t left = rand() % (width - 1) + 1;
     uint32_t right = width - left;
     // 随机生成 x, y
@@ -119,10 +123,11 @@ void ConstantSubstitution::substitute(Instruction *I){
     int operandNum = I->getNumOperands();
     for(int i = 0;i < operandNum;i ++){
         if(isa<ConstantInt>(I->getOperand(i))){
-            int choice = rand() % 1;
+            int choice = rand() % NUMBER_CONST_SUBST;
             switch (choice) {
                 case 0:
-                    linearSubstitute(I, i);
+                    //linearSubstitute(I, i);
+                    bitwiseSubstitute(I, i);
                     break;
                 case 1:
                     bitwiseSubstitute(I, i);
