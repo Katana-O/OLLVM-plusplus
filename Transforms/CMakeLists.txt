@@ -18,6 +18,8 @@ add_llvm_library( LLVMObfuscator MODULE
   src/RandomControlFlow.cpp
   src/ConstantSubstitution.cpp
   #src/ConstantSubstitutionEx.cpp
+  src/StringObfuscation.cpp
   src/SplitBasicBlock.cpp
   src/Utils.cpp
+  src/CryptoUtils.cpp
 )

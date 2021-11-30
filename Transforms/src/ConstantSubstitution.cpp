@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <ctime>
 #include "Utils.h"
+#include "CryptoUtils.h"
 using namespace llvm;
 using std::vector;
 
@@ -24,7 +25,7 @@ namespace{
             static char ID;
 
             ConstantSubstitution() : FunctionPass(ID) {
-                srand(time(NULL));
+                
             }
 
             bool runOnFunction(Function &F);
@@ -64,8 +65,8 @@ void ConstantSubstitution::linearSubstitute(Instruction *I, int i){
     ConstantInt *val = cast<ConstantInt>(I->getOperand(i));
     IntegerType *type = val->getType();
     // 随机生成 x, y, a, b
-    uint64_t randX = rand(), randY = rand();
-    uint64_t randA = rand(), randB = rand();
+    uint64_t randX = cryptoutils->get_uint64_t(), randY = cryptoutils->get_uint64_t();
+    uint64_t randA = cryptoutils->get_uint64_t(), randB = cryptoutils->get_uint64_t();
     // 计算 c = val - (ax + by)
     APInt c = val->getValue() - (randA * randX + randB * randY);
     ConstantInt *constX = CONST(type, randX);
@@ -96,10 +97,12 @@ void ConstantSubstitution::bitwiseSubstitute(Instruction *I, int i){
     if(width < 8){
         return;
     }
-    uint32_t left = rand() % (width - 1) + 1;
+    uint32_t left = cryptoutils->get_uint32_t() % (width - 1) + 1;
     uint32_t right = width - left;
     // 随机生成 x, y
-    uint64_t randX = rand(), randY = rand();
+    APInt mask = type->getMask();
+    uint64_t randX = (cryptoutils->get_uint64_t() & mask).getZExtValue();
+    uint64_t randY = (cryptoutils->get_uint64_t() & mask).getZExtValue();
     // 计算 c = val ^ (x << left | y >> right)
     APInt c = val->getValue() ^ (randX << left | randY >> right);
     ConstantInt *constX = CONST(type, randX);
@@ -123,7 +126,7 @@ void ConstantSubstitution::substitute(Instruction *I){
     int operandNum = I->getNumOperands();
     for(int i = 0;i < operandNum;i ++){
         if(isa<ConstantInt>(I->getOperand(i))){
-            int choice = rand() % NUMBER_CONST_SUBST;
+            uint32_t choice = cryptoutils->get_uint32_t() % NUMBER_CONST_SUBST;
             switch (choice) {
                 case 0:
                     linearSubstitute(I, i);

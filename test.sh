@@ -38,3 +38,6 @@ runTest "RandomControlFlow" "rcf"
 
 # 常量替换
 runTest "ConstantSubstitution" "csb"
+
+# 字符串混淆
+runTest "StringObfuscation" "sob"
