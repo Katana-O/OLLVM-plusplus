@@ -22,4 +22,5 @@ add_llvm_library( LLVMObfuscator MODULE
   src/SplitBasicBlock.cpp
   src/Utils.cpp
   src/CryptoUtils.cpp
+  src/GVObfuscation.cpp
 )
