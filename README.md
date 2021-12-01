@@ -1,5 +1,6 @@
 # OLLVM++
 Obfuscator refactored and extended from OLLVM.
+购买了看雪课程《LLVM与代码混淆技术》的小伙伴请注意，最新版本的OLLVM++与课程中的版本有所差别，要浏览课程中的版本[请查看](https://github.com/bluesadi/OLLVM-plusplus/tree/525680ab2ddf4f5c3744f1f6f6a3ba1581394ff4)。
 ## Environment
 - Ubuntu 18.04.5 LTS
 - LLVM 12.0.1
