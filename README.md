@@ -7,19 +7,14 @@ Obfuscator refactored and extended from OLLVM.
 - Clang 12.0.1
 - CMake 3.21.1
 ## Usage
-See [test.sh](test.sh)
+First you need to build and install LLVM on your machine. See [Building LLVM with CMake](https://llvm.org/docs/CMake.html)\
+And then you need to learn how to develop LLVM passes out of LLVM’s source tree. See [Developing LLVM passes out of source](https://llvm.org/docs/CMake.html#developing-llvm-passes-out-of-source)\
+Some examples in [test.sh](test.sh)
 ## Features
-### Control Flow Flattening
-<img src = "image/Control Flow Flatten.png">
-
-### Bogus Control Flow
-<img src = "image/Bogus Control Flow.png">
-
-### Instruction Substitution
-<img src = "image/Instruction Substitution.png">
-
-### Random Control Flow
-<img src = "image/Random Control Flow.png">
-
-### Constant Substitution
-<img src = "image/Constant Substitution.png">
+- Control Flow Flattening
+- Bogus Control Flow
+- Instruction Substitution
+- Random Control Flow
+- Constant Substitution
+- String Obfuscation
+- Global Variable Obfuscation
