@@ -7,8 +7,8 @@ Obfuscator refactored and extended from OLLVM.
 - Clang 12.0.1
 - CMake 3.21.1
 ## Usage
-1. Build and install LLVM on your machine. See [Building LLVM with CMake](https://llvm.org/docs/CMake.html)\
-2. Then learn how to develop LLVM passes out of LLVM’s source tree. See [Developing LLVM passes out of source](https://llvm.org/docs/CMake.html#developing-llvm-passes-out-of-source)\
+1. Build and install LLVM on your machine. See [Building LLVM with CMake](https://llvm.org/docs/CMake.html)
+2. Then learn how to develop LLVM passes out of LLVM’s source tree. See [Developing LLVM passes out of source](https://llvm.org/docs/CMake.html#developing-llvm-passes-out-of-source)
 3. There are some examples in [test.sh](test.sh)
 ## Features
 - Control Flow Flattening
