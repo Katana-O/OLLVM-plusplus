@@ -23,4 +23,5 @@ add_llvm_library( LLVMObfuscator MODULE
   src/Utils.cpp
   src/CryptoUtils.cpp
   src/GVObfuscation.cpp
+  src/FullProtect.cpp
 )

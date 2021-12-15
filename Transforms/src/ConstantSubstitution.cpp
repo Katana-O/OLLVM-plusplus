@@ -10,6 +10,7 @@
 #include <ctime>
 #include "Utils.h"
 #include "CryptoUtils.h"
+#include "ConstantSubstitution.h"
 using namespace llvm;
 using std::vector;
 
@@ -137,6 +138,10 @@ void ConstantSubstitution::substitute(Instruction *I){
             }
         }
     }
+}
+
+FunctionPass* llvm::createConstantSubstitutionPass(){
+    return new ConstantSubstitution();
 }
 
 char ConstantSubstitution::ID = 0;

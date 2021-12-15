@@ -12,6 +12,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include "RandomControlFlow.h"
 using std::vector;
 using namespace llvm;
 
@@ -125,6 +126,10 @@ Value* RandomControlFlow::alterVal(Value *startVar,BasicBlock *insertAfter){
         result = op8;
     }
     return result;
+}
+
+FunctionPass* llvm::createRandomControlFlowPass(){
+    return new RandomControlFlow();
 }
 
 char RandomControlFlow::ID = 0;

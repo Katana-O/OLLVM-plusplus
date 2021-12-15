@@ -38,8 +38,11 @@ clang++ IR/orig.ll IR/AES.ll -o Bin/orig
 # # 常量替换
 # runTest "ConstantSubstitution" "csb"
 
-# 字符串混淆
-runTest "StringObfuscation" "sob"
+# # 字符串混淆
+# runTest "StringObfuscation" "sob"
 
-# 全局变量混淆
-runTest "GVObfuscation" "gvo"
+# # 全局变量混淆
+# runTest "GVObfuscation" "gvo"
+
+# 保护全开
+runTest "FullProtect" "fpt"
